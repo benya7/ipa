@@ -4,7 +4,6 @@ import { yamux } from "@chainsafe/libp2p-yamux";
 import { autoNAT } from "@libp2p/autonat";
 import { bootstrap } from "@libp2p/bootstrap";
 import {
-  circuitRelayServer,
   circuitRelayTransport,
 } from "@libp2p/circuit-relay-v2";
 import { dcutr } from "@libp2p/dcutr";
@@ -31,17 +30,11 @@ export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
   // Ces librairies-ci ne peuvent pas être compilées pour l'environnement
   // navigateur. Nous devons donc les importer dynamiquement ici afin d'éviter
   // des problèmes de compilation pour le navigateur.
-  const { tcp } = await import("@libp2p/tcp");
   const { mdns } = await import("@libp2p/mdns");
-
 
   return {
     addresses: {
       listen: [
-        "/ip4/0.0.0.0/tcp/0",
-        "/ip4/0.0.0.0/tcp/0/ws",
-        "/ip6/::/tcp/0",
-        "/ip6/::/tcp/0/ws",
         "/webrtc",
         "/webtransport",
         "/p2p-circuit",
@@ -57,7 +50,6 @@ export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
       webRTC(),
       webTransport(),
       webRTCDirect(),
-      tcp(),
       circuitRelayTransport(),
     ],
     connectionEncrypters: [noise()],
@@ -108,7 +100,6 @@ export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
         // peerInfoMapper: removePrivateAddressesMapper
         }),*/
       upnp: uPnPNAT(),
-      relay: circuitRelayServer(),
     },
   };
 };
