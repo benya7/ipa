@@ -1,4 +1,3 @@
-import { join } from "path";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { noise } from "@chainsafe/libp2p-noise";
 import { yamux } from "@chainsafe/libp2p-yamux";
@@ -18,7 +17,12 @@ import { webTransport } from "@libp2p/webtransport";
 import { FaultTolerance } from "@libp2p/interface";
 import { ping } from "@libp2p/ping";
 import { uPnPNAT } from "@libp2p/upnp-nat";
-import { ADRESSES_NŒUDS_INITIAUX } from "./const.js";
+import {
+  ADRESSES_NŒUDS_INITIAUX,
+  ADRESSES_NŒUDS_RELAI_RUST,
+  ADRESSES_NŒUDS_RELAI_WS,
+} from "./const.js";
+import { résoudreInfoAdresses } from "./utils.js";
 import type { Libp2pOptions } from "libp2p";
 
 // import { kadDHT } from "@libp2p/kad-dht";
@@ -68,7 +72,7 @@ export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
         timeout: 0,
       }),
       pubsubPeerDiscovery({
-        interval: 10000,
+        interval: 1000,
         topics: ["constellation._peer-discovery._p2p._pubsub"], // defaults to ['_peer-discovery._p2p._pubsub']
         listenOnly: false,
       }),
@@ -91,6 +95,13 @@ export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
         allowPublishToZeroTopicPeers: true,
         runOnLimitedConnection: true,
         canRelayMessage: true,
+        directPeers: résoudreInfoAdresses([
+          ...ADRESSES_NŒUDS_RELAI_WS,
+          ...ADRESSES_NŒUDS_RELAI_RUST,
+        ]),
+        scoreThresholds: {
+          acceptPXThreshold: 0,
+        },
       }),
       /*dht: kadDHT({
         clientMode: true,
