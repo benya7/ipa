@@ -15,7 +15,6 @@ import { pubsubPeerDiscovery } from "@libp2p/pubsub-peer-discovery";
 import { detect } from "detect-browser";
 import { ping } from "@libp2p/ping";
 
-import { IDBDatastore } from "datastore-idb";
 import { FaultTolerance } from "@libp2p/interface";
 import {
   ADRESSES_NŒUDS_INITIAUX,
@@ -29,14 +28,7 @@ import type { Libp2pOptions } from "libp2p";
 
 // https://github.com/ipfs/helia/blob/main/packages/helia/src/utils/libp2p-defaults.browser.ts#L34
 
-export const obtOptionsLibp2pNavigateur = async ({
-  dossier,
-}: {
-  dossier: string;
-}): Promise<Libp2pOptions> => {
-  const dossierStockage = `${dossier}/libp2p`;
-  const stockage = new IDBDatastore(dossierStockage);
-  await stockage.open();
+export const obtOptionsLibp2pNavigateur = async (): Promise<Libp2pOptions> => {
 
   const transports = [
     webSockets({
@@ -63,7 +55,6 @@ export const obtOptionsLibp2pNavigateur = async ({
     connectionGater: {
       denyDialMultiaddr: () => false,
     },
-    datastore: stockage,
     peerDiscovery: [
       bootstrap({
         list: ADRESSES_NŒUDS_INITIAUX,

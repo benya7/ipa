@@ -23,20 +23,13 @@ import type { Libp2pOptions } from "libp2p";
 
 // import { kadDHT } from "@libp2p/kad-dht";
 
-export const obtOptionsLibp2pNode = async ({
-  dossier,
-}: {
-  dossier: string;
-}): Promise<Libp2pOptions> => {
+export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
   // Ces librairies-ci ne peuvent pas être compilées pour l'environnement
   // navigateur. Nous devons donc les importer dynamiquement ici afin d'éviter
   // des problèmes de compilation pour le navigateur.
   const { tcp } = await import("@libp2p/tcp");
   const { mdns } = await import("@libp2p/mdns");
 
-  const { FsDatastore } = await import("datastore-fs");
-  const dossierStockage = join(dossier, "libp2p");
-  const stockage = new FsDatastore(dossierStockage);
 
   return {
     addresses: {
@@ -68,7 +61,6 @@ export const obtOptionsLibp2pNode = async ({
     connectionGater: {
       denyDialMultiaddr: () => false,
     },
-    datastore: stockage,
     peerDiscovery: [
       mdns(),
       bootstrap({

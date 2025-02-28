@@ -36,18 +36,18 @@ export const obtConfigLibp2pPlateforme = async ({
   let configPlateforme: Libp2pOptions;
   if (isBrowser || isElectronRenderer) {
     // À faire - migrer vers travailleur ?
-    configPlateforme = await obtOptionsLibp2pNavigateur({ dossier });
+    configPlateforme = await obtOptionsLibp2pNavigateur();
   } else if (isWebWorker) {
     configPlateforme = await obtOptionsLibp2pTravailleurWeb();
   } else if (isElectronMain) {
     configPlateforme = await obtOptionsLibp2pÉlectionPrincipal({ dossier });
   } else if (isNode) {
-    configPlateforme = await obtOptionsLibp2pNode({ dossier });
+    configPlateforme = await obtOptionsLibp2pNode();
   } else {
     console.warn(
       "Plateforme non reconnue. On utilisera la configuration navigateur.",
     );
-    configPlateforme = await obtOptionsLibp2pNavigateur({ dossier });
+    configPlateforme = await obtOptionsLibp2pNavigateur();
   }
   return configPlateforme;
 };
