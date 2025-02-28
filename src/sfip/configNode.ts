@@ -75,8 +75,16 @@ export const obtOptionsLibp2pNode = async (): Promise<Libp2pOptions> => {
     ],
     services: {
       ping: ping(),
-      identify: identify(),
-      identifyPush: identifyPush(),
+      identify: identify({
+        maxMessageSize: 1e6,
+        maxInboundStreams: 50,
+        maxOutboundStreams: 50,
+      }),
+      identifyPush: identifyPush({
+        maxMessageSize: 1e6,
+        maxInboundStreams: 50,
+        maxOutboundStreams: 50,
+      }),
       autoNAT: autoNAT(),
       dcutr: dcutr(),
       pubsub: gossipsub({
