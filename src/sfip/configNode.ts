@@ -45,7 +45,6 @@ export const obtOptionsLibp2pNode = async ({
   // navigateur. Nous devons donc les importer dynamiquement ici afin d'éviter
   // des problèmes de compilation pour le navigateur.
   const { tcp } = await import("@libp2p/tcp");
-  const { mdns } = await import("@libp2p/mdns");
 
   const idPair = clefPrivée ? peerIdFromPrivateKey(clefPrivée) : undefined;
 
