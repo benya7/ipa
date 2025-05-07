@@ -184,7 +184,8 @@
       "electron",
       "esbuild",
       "iso-constants",
-      "node-datachannel"
+      "node-datachannel",
+      "unrs-resolver"
     ]
   }
 }
