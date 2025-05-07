@@ -1,6 +1,7 @@
 export const ADRESSES_NŒUDS_RELAI_WS = [
-  "/dns4/relai-ws-libp2p.xn--rseau-constellation-bzb.ca/tcp/443/wss/p2p/12D3KooWGVYEgCLYwMSa1hDFW93fiCxhN2V2QUuMGCEfmG5ZuM9m",
-  "/dns4/relai-ws-libp2p.xn--rseau-constellation-bzb.ca/tcp/80/ws/p2p/12D3KooWGVYEgCLYwMSa1hDFW93fiCxhN2V2QUuMGCEfmG5ZuM9m",
+  "/dns4/relay01.lon.riff.cc/tcp/443/wss/p2p/12D3KooWLrPDcPdo74cmEWHK7YNAg8kjRTrSAzaKNRxZSdKf9Ugm",
+  "/dns4/relay02.lon.riff.cc/tcp/443/wss/p2p/12D3KooWJc7ojxQoamFMQfoDGnCiYZzByHNuRoyfJXe2rs3qSkSb",
+  "/dns4/relay03.lon.riff.cc/tcp/443/wss/p2p/12D3KooWFpasiuwNcLv8V9tJHrjqHt44EdWGAo6xxR3K5yHhwcxt",
 ];
 
 export const ADRESSES_NŒUDS_RELAI_RUST = [
