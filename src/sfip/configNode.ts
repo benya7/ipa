@@ -45,6 +45,7 @@ export const obtOptionsLibp2pNode = async ({
   // navigateur. Nous devons donc les importer dynamiquement ici afin d'éviter
   // des problèmes de compilation pour le navigateur.
   const { tcp } = await import("@libp2p/tcp");
+  const { mdns } = await import("@libp2p/mdns");
 
   const idPair = clefPrivée ? peerIdFromPrivateKey(clefPrivée) : undefined;
 
@@ -61,8 +62,8 @@ export const obtOptionsLibp2pNode = async ({
       listen: [
         "/ip4/127.0.0.1/tcp/8080",
         "/ip4/127.0.0.1/tcp/8080/ws",
-        "/ip6/localhost/tcp/8080",
-        "/ip6/localhost/tcp/8080/ws",
+        "/ip6/::1/tcp/8080",
+        "/ip6/::1/tcp/8080/ws",
         "/webrtc",
         "/webtransport",
         "/p2p-circuit",
