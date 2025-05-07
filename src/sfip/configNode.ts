@@ -60,10 +60,10 @@ export const obtOptionsLibp2pNode = async ({
   return {
     addresses: {
       listen: [
-        "/ip4/0.0.0.0/tcp/0",
-        "/ip4/0.0.0.0/tcp/0/ws",
-        "/ip6/::/tcp/0",
-        "/ip6/::/tcp/0/ws",
+        "/ip4/127.0.0.1/tcp/8080",
+        "/ip4/127.0.0.1/tcp/8080/ws",
+        "/ip6/localhost/tcp/8080",
+        "/ip6/localhost/tcp/8080/ws",
         "/webrtc",
         "/webtransport",
         "/p2p-circuit",
@@ -73,7 +73,6 @@ export const obtOptionsLibp2pNode = async ({
           ? domaines
               .map((domaine) => [
                 `/dns4/${domaine}/tcp/443/wss/p2p/${idPair.toString()}`,
-                `/dns4/${domaine}/tcp/80/ws/p2p/${idPair.toString()}`,
               ])
               .flat()
           : undefined,
