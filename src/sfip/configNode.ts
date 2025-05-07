@@ -103,7 +103,6 @@ export const obtOptionsLibp2pNode = async ({
     },
     // datastore: stockage,
     peerDiscovery: [
-      mdns(),
       bootstrap({
         list: [...ADRESSES_NŒUDS_INITIAUX, ...pairsParDéfaut],
         timeout: 0,
