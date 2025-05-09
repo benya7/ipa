@@ -480,6 +480,25 @@ export class GestionnaireOrbite<T extends ServiceMap = ServiceMap> {
           }
         }),
       ); */
+      await Promise.allSettled(
+        Object.keys(this._bdsOrbite).map(async (id) => {
+          const dbData = this._bdsOrbite[id];
+          // Check if dbData exists, as it might be deleted by effacerBd concurrently
+          if (dbData && !dbData.idsRequêtes.size) {
+            console.log(`Nettoyage: Tentative de fermeture de la BD ${id}`);
+            // Ensure this entry is removed before attempting to close,
+            // to prevent race conditions if close is slow or errors.
+            delete this._bdsOrbite[id];
+            try {
+              await dbData.bd.close(); // This is the critical call
+              console.log(`Nettoyage: BD ${id} fermée avec succès.`);
+            } catch (closeError) {
+              console.error(`Nettoyage: Erreur lors de la fermeture de la BD ${id}:`, closeError);
+              // Optionally, consider if you need to put it back for another attempt or handle otherwise
+            }
+          }
+        }),
+      );
     };
     const i = setInterval(fNettoyer, 1000 * 60 * 5);
     return async () => clearInterval(i);
