@@ -91,7 +91,6 @@ export const réessayer = async <T>({
   return _interne({ f, signal, attempt: 0 });
 };
 
-
 export type Store =
   | FeedDatabaseType
   | SetDatabaseType
