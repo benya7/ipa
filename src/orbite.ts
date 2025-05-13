@@ -48,29 +48,33 @@ const pSignal = async (signal: AbortSignal): Promise<never> => {
 export const réessayer = async <T>({
   f,
   signal,
+  maxRetries = 3,
 }: {
   f: () => Promise<T>;
   signal: AbortSignal;
+  maxRetries?: number;
 }): Promise<T> => {
   let avant = Date.now();
   const _interne = async ({
     f,
     signal,
-    n,
+    attempt,
   }: {
     f: () => Promise<T>;
     signal: AbortSignal;
-    n: number;
+    attempt: number;
   }): Promise<T> => {
     try {
       avant = Date.now();
       return await Promise.race([f(), pSignal(signal)]);
     } catch (e) {
       if (signal.aborted) throw new AbortError();
-      console.log(e);
-      n++;
+      if (attempt >= maxRetries) {
+        throw e;
+      }
+      attempt++;
       const maintenant = Date.now();
-      const tempsÀAttendre = n * 1000 - (maintenant - avant);
+      const tempsÀAttendre = attempt * 1000 - (maintenant - avant);
       if (tempsÀAttendre > 0) {
         await new Promise<void>((résoudre) => {
           const chrono = setTimeout(résoudre, tempsÀAttendre);
@@ -81,11 +85,12 @@ export const réessayer = async <T>({
         });
         if (signal.aborted) throw new AbortError();
       }
-      return await _interne({ f, signal, n });
+      return await _interne({ f, signal, attempt });
     }
   };
-  return _interne({ f, signal, n: 0 });
+  return _interne({ f, signal, attempt: 0 });
 };
+
 
 export type Store =
   | FeedDatabaseType
