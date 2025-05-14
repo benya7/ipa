@@ -1614,7 +1614,7 @@ export class Constellation<T extends ServicesLibp2p = ServicesLibp2p> {
     });
 
     const fOublier = async () => {
-      signaleur.abort();
+      signaleur.abort(`Oublier de la BD: ${id}`);
       await Promise.allSettled(fsOublier.map((f) => f()));
       await Promise.allSettled(Object.values(promesses));
     };
@@ -2676,7 +2676,9 @@ export class Constellation<T extends ServicesLibp2p = ServicesLibp2p> {
   async fermer(): Promise<void> {
     await this.attendreInitialisée();
 
-    this.signaleurArrêt.abort();
+    this.signaleurArrêt.abort(
+      "Arrêt demandé par l'utilisateur. client.fermer()",
+    );
 
     await this._fermerComposantes();
 

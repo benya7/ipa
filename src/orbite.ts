@@ -35,7 +35,7 @@ import type { Libp2p } from "libp2p";
 import type { ServicesLibp2p } from "./sfip/index.js";
 
 const pSignal = async (signal: AbortSignal): Promise<never> => {
-  if (signal.aborted) throw new AbortError();
+  if (signal.aborted) throw new AbortError("Opération annulée, pSignal");
   return new Promise<never>((_résoudre, rejeter) => {
     const lorsquAvorté = () => {
       signal.removeEventListener("abort", lorsquAvorté);
@@ -68,7 +68,7 @@ export const réessayer = async <T>({
       avant = Date.now();
       return await Promise.race([f(), pSignal(signal)]);
     } catch (e) {
-      if (signal.aborted) throw new AbortError();
+      if (signal.aborted) throw new AbortError("Opération annulée, réessayer");
       if (attempt >= maxRetries) {
         throw e;
       }
@@ -83,7 +83,8 @@ export const réessayer = async <T>({
             résoudre();
           });
         });
-        if (signal.aborted) throw new AbortError();
+        if (signal.aborted)
+          throw new AbortError("Opération annulée, réessayer 2");
       }
       return await _interne({ f, signal, attempt });
     }
@@ -508,7 +509,7 @@ export class GestionnaireOrbite<T extends ServiceMap = ServiceMap> {
   }
 
   async fermer({ arrêterOrbite }: { arrêterOrbite: boolean }): Promise<void> {
-    this.signaleurArrêt.abort();
+    this.signaleurArrêt.abort("Fermeture de l'application, arrêt de l'orbite");
     if (this._oublierNettoyageBdsOuvertes)
       await this._oublierNettoyageBdsOuvertes();
     if (arrêterOrbite) {

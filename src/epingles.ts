@@ -110,7 +110,9 @@ export class Épingles {
   }
 
   async fermer() {
-    this.signaleurArrêt.abort();
+    this.signaleurArrêt.abort(
+      "Fermeture de l'application, arrêt de l'épinglage",
+    );
     await Promise.allSettled(
       Object.values(this.bdsOuvertes).map(({ fOublier }) => fOublier()),
     );

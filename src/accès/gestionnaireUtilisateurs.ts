@@ -93,7 +93,7 @@ class AccèsUtilisateur {
   }
 
   async fermer() {
-    this.signaleurArrêt.abort();
+    this.signaleurArrêt.abort("Fermeture de l'application, arrêt de l'accès");
     if (this.oublierSuivi) await this.oublierSuivi();
     await this.fOublierBd?.();
   }
